@@ -1,20 +1,19 @@
-# Use a slim base image
 FROM python:3.12-slim
 
-# Install system dependencies for OpenCV
+# System dependency for OpenCV
 RUN apt-get update && apt-get install -y libgl1 && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
 
-# Copy all files to the container
-COPY . /app
+# Copy project files
+COPY . .
 
-# Install dependencies
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port
+# Expose the API port
 EXPOSE 5000
 
-# Start the API
+# Run the API server
 CMD ["python", "api_server.py"]
