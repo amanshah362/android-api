@@ -2,22 +2,13 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Allow access from mobile apps
+CORS(app)
 
-# Simulated database (use MySQL later if needed)
+# Simulated database
 clients = {
-    "001": {
-        "name": "Ali",
-        "plot_no": "21A",
-        "block": "C",
-        "pin": "1234",
-        "total_price": "5000000",
-        "paid_amount": "3000000",
-        "registry_status": "Not Registered"
-    }
+    "001": {"name": "Ali", "plot": "21A", "block": "C", "pin": "1234"}
 }
 
-# ------------------ API: Get client info ------------------
 @app.route("/client/<client_id>", methods=["GET"])
 def get_client(client_id):
     pin = request.args.get("pin")
@@ -26,7 +17,6 @@ def get_client(client_id):
         return jsonify({"status": "success", "data": client})
     return jsonify({"status": "error", "message": "Client not found or wrong PIN"}), 404
 
-# ------------------ API: Create/Update client ------------------
 @app.route("/client", methods=["POST"])
 def add_or_update_client():
     data = request.json
@@ -35,11 +25,9 @@ def add_or_update_client():
     clients[data["id"]] = data
     return jsonify({"status": "success", "message": "Client saved"}), 201
 
-# ------------------ Health Check ------------------
 @app.route("/", methods=["GET"])
 def index():
     return "✅ API is running"
 
-# ✅ Corrected entry point
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
